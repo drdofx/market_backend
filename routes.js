@@ -60,20 +60,18 @@ router.put("/item/:id", async (req, res) => {
 // delete individual item
 router.delete("/item/:id", async (req, res) => {
     try {
-        await Item.deleteOne({ _id: req.params.id }, (err, data) => {
-            if (err) return console.error(err);
-            res.status(204).send("ok item removed");
-        });
+        await Item.deleteOne({ _id: req.params.id });
+        res.send("ok removed");
     } catch {
         res.status(404).send({ error: "error, item does not exist" });
     }
 })
 
 // delete every individual item
-router.delete("/item/delete", async (req, res) => {
+router.delete("/item-delete", async (req, res) => {
     try {
-        await Item.remove();
-        res.status(204).send("ok removed");
+        await Item.deleteMany();
+        res.send("ok removed");
     } catch {
         res.status(404).send({ error: "error, theres no item to be removed" });
     }
