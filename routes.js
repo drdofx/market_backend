@@ -7,9 +7,9 @@ const router = express.Router();
 router.get("/item", async (req, res) => {
     try {
         let items = await Item.find();
-        res.send(items);
+        res.json(items);
     } catch {
-        res.status(404).send({ error: "failed to get items" });
+        res.status(404).json({ error: "failed to get items" });
     }
 })
 
@@ -17,9 +17,9 @@ router.get("/item", async (req, res) => {
 router.get("/item/:id", async (req, res) => {
     try {
         let item = await Item.findOne({ _id: req.params.id });
-        res.send(item);
+        res.json(item);
     } catch {
-        res.status(404).send({ error: "error, item does not exist" });
+        res.status(404).json({ error: "error, item does not exist" });
     }
 })
 
@@ -33,7 +33,7 @@ router.post("/item", async (req, res) => {
     })
 
     await items.save(err => {
-        if (err) return res.send({ error: "error" });
+        if (err) return res.json({ error: "error" });
         res.json({ status: "success" });
     });
 
@@ -49,11 +49,11 @@ router.put("/item/:id", async (req, res) => {
         if (req.body.seller) item.seller = req.body.seller;
 
         await item.save(err => {
-            if (err) return res.send({ error: "error" });
+            if (err) return res.json({ error: "error" });
             res.json({ status: "success" });
         });
     } catch {
-        res.status(404).send({ error: "error, item does not exist" });
+        res.status(404).json({ error: "error, item does not exist" });
     }
 })
 
@@ -63,7 +63,7 @@ router.delete("/item/:id", async (req, res) => {
         await Item.deleteOne({ _id: req.params.id });
         res.send("ok removed");
     } catch {
-        res.status(404).send({ error: "error, item does not exist" });
+        res.status(404).json({ error: "error, item does not exist" });
     }
 })
 
@@ -73,15 +73,35 @@ router.delete("/item-delete", async (req, res) => {
         await Item.deleteMany();
         res.send("ok removed");
     } catch {
-        res.status(404).send({ error: "error, theres no item to be removed" });
+        res.status(404).json({ error: "error, theres no item to be removed" });
     }
 })
 
 //-------------------------------------------------------
 // get all items
 router.get("/items", async (req, res) => {
-    let allItems = await AllItems.find();
-    res.status(200).send(allItems);
+    try {
+        if (req.query.search) {
+            let allItems = await AllItems.find({ name: { $regex: req.query.search, $options: 'si' }});
+            res.json(allItems);
+        } else {
+            let allItems = await AllItems.find();
+            res.json(allItems);
+        }
+    } catch {
+        res.status(404).json({ error: "failed to get items" });
+    }
+})
+
+// get one from all item
+router.get("/items/:id", async (req, res) => {
+    try {
+        let allItems = await AllItems.findOne({ _id: req.params.id });
+        if (!allItems) throw new Error('No item found!');
+        res.json(allItems);
+    } catch {
+        res.status(404).json({ error: "failed to get item" });
+    }
 })
 
 // post all items 
@@ -92,12 +112,52 @@ router.post("/items", async (req, res) => {
     })
 
     await allItems.save(err => {
-        if (err) return console.error(err);
+        if (err) return res.json({ error: "error" });
         res.json({ status: "success" });
     });
 
 })
 
+// update one from all item
+router.put("/items/:id", async (req, res) => {
+    try {
+        let allItems = await AllItems.findOne({ _id: req.params.id });
+        if (req.body.name) allItems.name = req.body.name;
+        if (req.body.category) allItems.category = req.body.category;
+        if (req.body.stock) allItems.stock = req.body.stock;
+        if (req.body.seller) allItems.seller = req.body.seller;
 
+        await allItems.save(err => {
+            if (err) return res.json({ error: "error" });
+            res.json({ status: "success" });
+        });
+    } catch {
+        res.status(404).json({ error: "error, item does not exist" });
+    }
+})
 
+// delete one from all item
+router.delete("/items/:id", async (req, res) => {
+    try {
+        await AllItems.deleteOne({ _id: req.params.id });
+        res.send("ok removed");
+    } catch {
+        res.status(404).json({ error: "error, item does not exist" });
+    }
+})
+
+// delete every all item
+router.delete("/items-delete", async (req, res) => {
+    try {
+        await AllItems.deleteMany();
+        res.send("ok removed");
+    } catch {
+        res.status(404).json({ error: "error, theres no item to be removed" });
+    }
+})
+
+// // search query based on item name
+// router.get('/items?search=', (req, res) => {
+//     res.send({ message: req.query.search });
+// })
 export default router;
