@@ -1,7 +1,42 @@
 import express from "express";
-import Item from "./models/Item.js";
-import AllItems from "./models/Items.js";
+import Item from "../models/Item.js";
+import AllItems from "../models/Items.js";
+import multer from "multer";
 const router = express.Router();
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString().replace(/:|\./g,'') + file.originalname);
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    // reject a file if its not jpeg or png
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {   
+        cb(null, true);
+    } else {
+        cb(new Error('message'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 8
+    },
+    fileFilter: fileFilter
+});
+
+
+// test route for uploading images
+
+// router.post("/upload", upload.single("upload"), (req, res) => {
+//     res.send(req.file);
+// })
+
 
 // get individual item
 router.get("/item", async (req, res) => {
@@ -81,13 +116,15 @@ router.delete("/item-delete", async (req, res) => {
 // get all items
 router.get("/items", async (req, res) => {
     try {
+        let allItems = null;
         if (req.query.search) {
-            let allItems = await AllItems.find({ name: { $regex: req.query.search, $options: 'si' }});
-            res.json(allItems);
+            allItems = await AllItems.find({ name: { $regex: req.query.search, $options: 'si' }}).select("name category image")
+        } else if (req.query.filter) {
+            allItems = await AllItems.find({ category: { $eq: req.query.filter }}).select("name category image");
         } else {
-            let allItems = await AllItems.find();
-            res.json(allItems);
+            allItems = await AllItems.find().select("name category image");
         }
+        res.json(allItems);
     } catch {
         res.status(404).json({ error: "failed to get items" });
     }
@@ -96,7 +133,7 @@ router.get("/items", async (req, res) => {
 // get one from all item
 router.get("/items/:id", async (req, res) => {
     try {
-        let allItems = await AllItems.findOne({ _id: req.params.id });
+        let allItems = await AllItems.findOne({ _id: req.params.id }).select("name category image");
         if (!allItems) throw new Error('No item found!');
         res.json(allItems);
     } catch {
@@ -105,10 +142,12 @@ router.get("/items/:id", async (req, res) => {
 })
 
 // post all items 
-router.post("/items", async (req, res) => {
+router.post("/items", upload.single("upload"), async (req, res) => {
+    const halfUrl = req.protocol + '://' + req.get('host') + '/';
     let allItems = new AllItems({
         name: req.body.name,
         category: req.body.category,
+        image: halfUrl + req.file.path.replace(/\\/g, "/")
     })
 
     await allItems.save(err => {
