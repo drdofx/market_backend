@@ -7,7 +7,7 @@ const AllItemsSchema = new Schema({
     title: String,
     price: Number,
     category: String,
-    image: String,
+    imageUrl: String,
 })
 
 const AllItems = mongoose.model("AllItems", AllItemsSchema);

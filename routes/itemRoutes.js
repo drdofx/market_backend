@@ -118,11 +118,11 @@ router.get("/items", async (req, res) => {
     try {
         let allItems = null;
         if (req.query.search) {
-            allItems = await AllItems.find({ name: { $regex: req.query.search, $options: 'si' }}).select("name category image")
+            allItems = await AllItems.find({ title: { $regex: req.query.search, $options: 'si' }}, { _id : 0 }).select("id idp title category imageUrl")
         } else if (req.query.filter) {
-            allItems = await AllItems.find({ category: { $eq: req.query.filter }}).select("name category image");
+            allItems = await AllItems.find({ category: { $eq: req.query.filter }}, { _id : 0 }).select("title category imageUrl");
         } else {
-            allItems = await AllItems.find().select("name category image");
+            allItems = await AllItems.find({}, { _id : 0 }).select("id idp title price category imageUrl");
         }
         res.json(allItems);
     } catch {
@@ -133,7 +133,7 @@ router.get("/items", async (req, res) => {
 // get one from all item
 router.get("/items/:id", async (req, res) => {
     try {
-        let allItems = await AllItems.findOne({ _id: req.params.id }).select("name category image");
+        let allItems = await AllItems.findOne({ _id: req.params.id }).select("title category imageUrl");
         if (!allItems) throw new Error('No item found!');
         res.json(allItems);
     } catch {
@@ -145,9 +145,12 @@ router.get("/items/:id", async (req, res) => {
 router.post("/items", upload.single("upload"), async (req, res) => {
     const halfUrl = req.protocol + '://' + req.get('host') + '/';
     let allItems = new AllItems({
-        name: req.body.name,
+        id: req.body.id,
+        idp: 4,
+        title: req.body.title,
+        price: req.body.price,
         category: req.body.category,
-        image: halfUrl + req.file.path.replace(/\\/g, "/")
+        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
     })
 
     await allItems.save(err => {
@@ -161,7 +164,7 @@ router.post("/items", upload.single("upload"), async (req, res) => {
 router.put("/items/:id", async (req, res) => {
     try {
         let allItems = await AllItems.findOne({ _id: req.params.id });
-        if (req.body.name) allItems.name = req.body.name;
+        if (req.body.title) allItems.title = req.body.title;
         if (req.body.category) allItems.category = req.body.category;
         if (req.body.stock) allItems.stock = req.body.stock;
         if (req.body.seller) allItems.seller = req.body.seller;

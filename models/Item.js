@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const itemSchema = new Schema({
-    name: String,
+    id: Number,
     category: String,
-    stock: Number,
-    seller: String,
+    title: String,
+    imgUrl: String,
 })
 
 const Item = mongoose.model("Item", itemSchema);
