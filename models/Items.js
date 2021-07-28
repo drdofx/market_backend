@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const AllItemsSchema = new Schema({
-    name: String,
+    id: Number,
+    idp: Number,
+    title: String,
+    price: Number,
     category: String,
     image: String,
 })

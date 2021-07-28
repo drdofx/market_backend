@@ -1,0 +1,31 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "category": "carbohydrate",
+      "title": "Carbohydrate",
+      "imgUrl": "/images/content/category-1.png"
+    },
+
+    {
+      "id": 2,
+      "category": "minuman",
+      "title": "Fress drink",
+      "imgUrl": "/images/content/category-2.png"
+    },
+
+    {
+      "id": 3,
+      "category": "vegetable",
+      "title": "Fress Vegetables",
+      "imgUrl": "/images/content/category-3.png"
+    },
+
+    {
+      "id": 4,
+      "category": "meat",
+      "title": "Fress meat",
+      "imgUrl": "/images/content/category-4.png"
+    }
+  ]
+}

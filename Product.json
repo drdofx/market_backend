@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "idp": 4,
+      "title": "Cabai",
+      "price": 9000,
+      "imageUrl": "/images/content/product-1.png"
+    },
+    {
+      "id": 2,
+      "idp": 4,
+      "title": "Ikan Tuna",
+      "price": "55000",
+      "imageUrl": "/images/content/product-2.png"
+    },
+    {
+      "id": 3,
+      "idp": 4,
+      "title": "Telur Ayam",
+      "price": "19000",
+      "imageUrl": "/images/content/product-3.png"
+    },
+    {
+      "id": 4,
+      "idp": 4,
+      "title": "Bawang Bombay",
+      "price": "15000",
+      "imageUrl": "/images/content/product-4.png"
+    },
+    {
+      "id": 5,
+      "idp": 4,
+      "title": "Gula Pasir Putih",
+      "price": "11000",
+      "imageUrl": "/images/content/product-5.png"
+    },
+    {
+      "id": 6,
+      "idp": 4,
+      "title": "Minyak Goreng",
+      "price": "25000",
+      "imageUrl": "/images/content/product-6.png"
+    },
+    {
+      "id": 7,
+      "idp": 4,
+      "title": "Mentega",
+      "price": "8000",
+      "imageUrl": "/images/content/product-7.png"
+    },
+    {
+      "id": 8,
+      "idp": 4,
+      "title": "Kembang Kol",
+      "price": "6000",
+      "imageUrl": "/images/content/product-8.png"
+    },
+    {
+      "id": 9,
+      "idp": 4,
+      "title": "Kecap Manis",
+      "price": "10000",
+      "imageUrl": "/images/content/product-9.png"
+    }
+  ]
+}
