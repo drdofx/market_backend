@@ -140,7 +140,7 @@ router.get("/item", (req, res) => {
     if (req.query.search) {
         AllItems
             .find({ title: { $regex: req.query.search, $options: 'si' }})
-            .populate({ path: "id_category", select: "category -_id" })
+            .populate({ path: "id_category", select: "id category -_id" })
             .select("-_id -__v")
             .exec((err, data) => {
                 if (err) return res.status(500).send("error");
@@ -149,7 +149,7 @@ router.get("/item", (req, res) => {
     } else {
         AllItems
             .find({})
-            .populate({ path: "id_category", select: "category -_id" })
+            .populate({ path: "id_category", select: "id category -_id" })
             .select("-_id -__v")
             .exec((err, data) => {
                 if (err) return res.status(500).send("error");
