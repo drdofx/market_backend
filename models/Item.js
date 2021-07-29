@@ -5,7 +5,7 @@ const itemSchema = new Schema({
     id: Number,
     category: String,
     title: String,
-    imgUrl: String,
+    imageUrl: String,
 })
 
 const Item = mongoose.model("Item", itemSchema);

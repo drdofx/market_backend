@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import Item from "./Item.js";
 const { Schema } = mongoose;
 
 const AllItemsSchema = new Schema({
     id: Number,
-    idp: Number,
+    id_category: {type: mongoose.Schema.Types.ObjectId, ref: 'Item'},
     title: String,
     price: Number,
     category: String,
