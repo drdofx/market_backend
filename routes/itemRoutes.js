@@ -9,7 +9,8 @@ const storage = multer.diskStorage({
         cb(null, 'images');
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().toISOString().replace(/:|\./g,'') + file.originalname);
+        // cb(null, new Date().toISOString().replace(/:|\./g,'') + file.originalname);
+        cb(null, file.originalname);
     }
 });
 
@@ -55,33 +56,33 @@ router.get("/item-category", async (req, res) => {
 })
 
 // get one from item category
-router.get("/item-category/:id", async (req, res) => {
-    try {
-        let itemCategory = await Item.findOne({ id: req.params.id }).select("-_id -__v");
-        if (!itemCategory) throw new Error('No item found!');
-        res.json(itemCategory);
-    } catch {
-        res.status(404).json({ error: "failed to get item" });
-    }
+router.get("/item-category/:id", (req, res) => {
+    Item
+        .findOne({ id: req.params.id })
+        .select("-_id -__v")
+        .exec((err, data) => {
+            if (err) return res.status(500).send("error");
+            return (data ? res.json(data) : res.status(404).send("No item found!"));
+        });
 })
 
 // post item category
-router.post("/item-category",  async (req, res) => {
-    // const halfUrl = req.protocol + '://' + req.get('host') + '/';
-    // let itemCategory = new Item({
-    //     id: req.body.id,
-    //     title: req.body.title,
-    //     category: req.body.category,
-    //     imageUrl: req.body.imageUrl
-    //     // imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-    // })
+router.post("/item-category", upload.single("upload"), async (req, res) => {
+    const halfUrl = req.protocol + '://' + req.get('host') + '/';
+    let itemCategory = new Item({
+        id: req.body.id,
+        category: req.body.category,
+        title: req.body.title,
+        // imageUrl: req.body.imageUrl
+        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+    })
 
-    // await itemCategory.save(err => {
-    //     if (err) return res.json({ error: "error" + err });
-    //     res.json({ status: "success" });
-    // });
+    await itemCategory.save(err => {
+        if (err) return res.json({ error: "error" + err });
+        res.json({ status: "success" });
+    });
 
-    // Insert Many to initialize data
+    /* Insert Many to initialize data
     const document = [
         {
           "id": 1,
@@ -93,7 +94,7 @@ router.post("/item-category",  async (req, res) => {
         {
           "id": 2,
           "category": "minuman",
-          "title": "Minuman Segar",
+          "title": "Minuman Sehat",
           "imageUrl": "https://ninefresh.herokuapp.com/images/category-2.png"
         },
       
@@ -109,6 +110,20 @@ router.post("/item-category",  async (req, res) => {
           "category": "daging",
           "title": "Daging Segar",
           "imageUrl": "https://ninefresh.herokuapp.com/images/category-4.png"
+        },
+
+        {
+            "id": 5,
+            "category": "buah",
+            "title": "Buah-Buahan",
+            "imageUrl": "-"
+        },
+
+        {
+            "id": 6,
+            "category": "lain-lain",
+            "title": "Lain-Lain",
+            "imageUrl": "-"
         }
     ];
 
@@ -119,6 +134,16 @@ router.post("/item-category",  async (req, res) => {
         .catch((err) => {
             res.json({err: "error" + err});
         });
+    */
+})
+
+router.delete("/item-category-delete", async (req, res) => {
+    try {
+        await Item.deleteMany();
+        res.send("ok removed");
+    } catch {
+        res.status(404).json({ error: "error, theres no item to be removed" });
+    }
 })
 //-------------------------------------------------------
 
@@ -180,95 +205,119 @@ router.get("/item/:id", (req, res) => {
     //     res.status(404).json({ error: "failed to get item" });
     // }
     AllItems
-        .find({ id: req.params.id })
+        .findOne({ id: req.params.id })
         .populate({ path: "id_category", select: "category -_id" })
         .select("-_id -__v")
         .exec((err, data) => {
             if (err) return res.status(500).send("error");
-            return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            return (data ? res.json(data) : res.status(404).send("No item found!"));
         });
 })
 
 // post all items 
 router.post("/item", upload.single("upload"), async (req, res) => {
-    // const halfUrl = req.protocol + '://' + req.get('host') + '/';
-    // let allItems = new AllItems({
-    //     id: req.body.id,
-    //     id_category: req.body.id_category,
-    //     title: req.body.title,
-    //     price: req.body.price,
-    //     category: req.body.category,
-    //     imageUrl: req.body.imageUrl
-    //     // imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-    // })
+    const halfUrl = req.protocol + '://' + req.get('host') + '/';
+    let allItems = new AllItems({
+        id: req.body.id,
+        id_category: req.body.id_category,
+        title: req.body.title,
+        price: req.body.price,
+        // imageUrl: req.body.imageUrl
+        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+    })
 
-    // await allItems.save(err => {
-    //     if (err) return res.json({ error: "error" + err });
-    //     res.json({ status: "success" });
-    // });
+    await allItems.save(err => {
+        if (err) return res.json({ error: "error" + err });
+        res.json({ status: "success" });
+    });
 
     
-    // initialize new documents
-
+    /* initialize new documents
+    
     const documents = [
         {
             "id": 1,
-            "id_category": "61025f683ad0521ba04f48d6",
+            "id_category": "6102c89fdcf8be2f28b053b4",
             "title": "Cabai",
             "price": 9000,
-            "imageUrl": "/images/content/product-1.png"
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-1.png"
         },
         {
             "id": 2,
-            "id_category": "61025f683ad0521ba04f48d7",
+            "id_category": "6102c89fdcf8be2f28b053b0",
             "title": "Ikan Tuna",
             "price": "55000",
-            "imageUrl": "/images/content/product-2.png"
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png"
         },
         {
             "id": 3,
-            "id_category": "61025f683ad0521ba04f48d7",
+            "id_category": "6102c89fdcf8be2f28b053b0",
             "title": "Telur Ayam",
             "price": "19000",
-            "imageUrl": "/images/content/product-3.png"
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png"
         },
         {
             "id": 4,
-            "id_category": "61025f683ad0521ba04f48d6",
+            "id_category": "6102c89fdcf8be2f28b053b2",
             "title": "Bawang Bombay",
             "price": "15000",
-            "imageUrl": "/images/content/product-4.png"
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-4.png"
         },
         {
             "id": 5,
+            "id_category": "6102c89fdcf8be2f28b053b5",
             "title": "Gula Pasir Putih",
             "price": 11000,
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-5.png"
         },
         {
             "id": 6,
+            "id_category": "6102c89fdcf8be2f28b053b5",
             "title": "Minyak Goreng",
             "price": 25000,
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-6.png"
         },
         {
             "id": 7,
+            "id_category": "6102c89fdcf8be2f28b053b5",
             "title": "Mentega",
             "price": 8000,
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-7.png"
         },
         {
             "id": 8,
-            "id_category": "61025f683ad0521ba04f48d6",
+            "id_category": "6102c89fdcf8be2f28b053b2",
             "title": "Kembang Kol",
             "price": 6000,
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-8.png"
         },
         {
             "id": 9,
+            "id_category": "6102c89fdcf8be2f28b053b5",
             "title": "Kecap Manis",
             "price": 10000,
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-9.png"
+        },
+        {
+            "id": 10,
+            "id_category": "6102c89fdcf8be2f28b053b2",
+            "title": "Daun Bawang",
+            "price": 5000,
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-10.png"
+        },
+        {
+            "id": 11,
+            "id_category": "6102c89fdcf8be2f28b053b2",
+            "title": "Daun Selada Keriting",
+            "price": 15000,
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-11.png"
+        },
+        {
+            "id": 12,
+            "id_category": "6102c89fdcf8be2f28b053b0",
+            "title": "Indomie Goreng 5 Pack",
+            "price": 10000,
+            "imageUrl": "https://ninefresh.herokuapp.com/images/product-12.png"
         }
     ]
     AllItems.insertMany(documents)
@@ -278,16 +327,17 @@ router.post("/item", upload.single("upload"), async (req, res) => {
         .catch((err) => {
             res.json({err: "error" + err});
         });
-
+    */
 })
 
 // update one from all item
 router.put("/item/:id", async (req, res) => {
     try {
-        let allItems = await AllItems.findOne({ _id: req.params.id });
+        let allItems = await AllItems.findOne({ id: req.params.id });
         if (req.body.title) allItems.title = req.body.title;
-        if (req.body.category) allItems.category = req.body.category;
+        if (req.body.id_category) allItems.id_category = req.body.id_category;
         if (req.body.price) allItems.price = req.body.price;
+        if (req.body.imageUrl) allItems.imageUrl = req.body.imageUrl; 
 
         await allItems.save(err => {
             if (err) return res.json({ error: "error" });
@@ -301,8 +351,10 @@ router.put("/item/:id", async (req, res) => {
 // delete one from all item
 router.delete("/item/:id", async (req, res) => {
     try {
-        await AllItems.deleteOne({ _id: req.params.id });
-        res.send("ok removed");
+        await AllItems.deleteOne({ id: req.params.id }, (err) => {
+            if (err) return res.send("err");
+            res.send("ok removed");
+        });
     } catch {
         res.status(404).json({ error: "error, item does not exist" });
     }
