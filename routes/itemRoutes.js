@@ -39,19 +39,25 @@ const upload = multer({
 // })
 
 // get item category
-router.get("/item-category", async (req, res) => {
-    try {
-        let itemCategory = null;
-        if (req.query.search) {
-            itemCategory = await Item.find({ title: { $regex: req.query.search, $options: 'si' }}).select("-__v");
-        } else if (req.query.filter) {
-            itemCategory = await Item.find({ category: { $eq: req.query.filter }}).select("-__v");
-        } else {
-            itemCategory = await Item.find({}).select("-__v");
-        }
-        res.json(itemCategory);
-    } catch {
-        res.status(404).json({ error: "failed to get items" });
+router.get("/item-category", (req, res) => {
+    if (req.query.search) {
+        Item
+            .find({ title: { $regex: req.query.search, $options: 'si' }})
+            .sort({'_id': 1})
+            .select("-__v")
+            .exec((err, data) => {
+                if (err) return res.status(500).send("error" + err);
+                return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            });
+    } else {
+        Item
+            .find({})
+            .sort({'_id': 1})
+            .select("-__v")
+            .exec((err, data) => {
+                if (err) return res.status(500).send("error" + err);
+                return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            });
     }
 })
 
@@ -149,22 +155,10 @@ router.delete("/item-category-delete", async (req, res) => {
 
 // get all items
 router.get("/item", (req, res) => {
-    // try {
-    //     let allItems = null;
-    //     if (req.query.search) {
-    //         allItems = await AllItems.find({ title: { $regex: req.query.search, $options: 'si' }}, { _id : 0 }).select("-__v");
-    //     } else if (req.query.filter) {
-    //         allItems = await AllItems.find({ category: { $eq: req.query.filter }}, { _id : 0 }).select("-__v");
-    //     } else {
-    //         allItems = await AllItems.find({}, { _id : 0 }).select("-__v");
-    //     }
-    //     res.json(allItems);
-    // } catch {
-    //     res.status(404).json({ error: "failed to get items" });
-    // }
     if (req.query.search) {
         AllItems
             .find({ title: { $regex: req.query.search, $options: 'si' }})
+            .sort({'_id': 1})
             .populate({ path: "id_category", select: "_id category" })
             .select("-__v")
             .exec((err, data) => {
@@ -174,6 +168,7 @@ router.get("/item", (req, res) => {
     } else {
         AllItems
             .find({})
+            .sort({'_id': 1})
             .populate({ path: "id_category", select: "_id category" })
             .select("-__v")
             .exec((err, data) => {
@@ -187,6 +182,7 @@ router.get("/item", (req, res) => {
 router.get("/item-group/:id", (req, res) => {
     AllItems
         .find({ id_category: req.params.id })
+        .sort({'_id': 1})
         .populate({ path: "id_category", select: "_id category" })
         .select("-__v")
         .exec((err, data) => {
@@ -197,13 +193,6 @@ router.get("/item-group/:id", (req, res) => {
 
 // get one from all item
 router.get("/item/:id", (req, res) => {
-    // try {
-    //     let allItems = await AllItems.findOne({ id: req.params.id }).select("title category imageUrl");
-    //     if (!allItems) throw new Error('No item found!');
-    //     res.json(allItems);
-    // } catch {
-    //     res.status(404).json({ error: "failed to get item" });
-    // }
     AllItems
         .findOne({ _id: req.params.id })
         .populate({ path: "id_category", select: "_id category" })
