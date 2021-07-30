@@ -4,7 +4,7 @@
     "price": 9000,
     "title": "Cabai Merah",
     "description": "<p class='text-xl leading-7 mb-6'>Cabe merah impor/lokal,  buah dan sayuran maupun bumbu. Digunakan sebagai salah satu bahan masakan yang menghasilkan rasa pedas..</p><p class='text-xl leading-7 mb-6'>Quality Greens Ornanic Cabe Merah Besar 100 g meruapakan cabai merah besar pilihan yang berkualitas yang sering dijadikan pelengkap makanan dan penambah rasa pedas</p>",
-    "imageUrl": "https://ninefresh.herokuapp.com/images/CabeSemillar-1.png",
+    "imageUrl": "https://ninefresh.herokuapp.com/images/CabaiSemillar-1.png",
     "id_category": {
       "_id": 1,
       "title": "Buah"
