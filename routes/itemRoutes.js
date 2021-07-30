@@ -359,8 +359,62 @@ router.delete("/item-delete", async (req, res) => {
     }
 })
 
-// // search query based on item name
-// router.get('/items?search=', (req, res) => {
-//     res.send({ message: req.query.search });
-// })
+
+//----------------------------------------------------
+
+// get item details
+router.get("/item-details", (req, res) => {
+    if (req.query.search) {
+        AllItems
+            .find({ title: { $regex: req.query.search, $options: 'si' }})
+            .sort({'_id': 1})
+            .populate({ path: "id_category", select: "_id category" })
+            .select("-__v")
+            .exec((err, data) => {
+                if (err) return res.status(500).send("error" + err);
+                return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            });
+    } else {
+        AllItems
+            .find({})
+            .sort({'_id': 1})
+            .populate({ path: "id_category", select: "_id category" })
+            .select("-__v")
+            .exec((err, data) => {
+                if (err) return res.status(500).send("error" + err);
+                return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            });
+    }
+})
+
+// get one from all item
+router.get("/item-details/:id", (req, res) => {
+    AllItems
+        .findOne({ _id: req.params.id })
+        .populate({ path: "id_category", select: "_id category" })
+        .select("-__v")
+        .exec((err, data) => {
+            if (err) return res.status(500).send("error");
+            return (data ? res.json(data) : res.status(404).send("No item found!"));
+        });
+})
+
+// post all items 
+router.post("/item", upload.single("upload"), async (req, res) => {
+    const halfUrl = req.protocol + '://' + req.get('host') + '/';
+    let allItems = new AllItems({
+        _id: req.body._id,
+        id_category: req.body.id_category,
+        title: req.body.title,
+        price: req.body.price,
+        // imageUrl: req.body.imageUrl
+        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+    })
+
+    await allItems.save(err => {
+        if (err) return res.json({ error: "error" + err });
+        res.json({ status: "success" });
+    });
+})
+
 export default router;

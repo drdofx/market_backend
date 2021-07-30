@@ -26,6 +26,10 @@ app.get('/testcategory', (req, res) => {
     res.header("Content-Type",'application/json');
     res.sendFile(path.resolve('BrowseCate.json'));
 })
+app.get('/testdetails', (req, res) => {
+    res.header("Content-Type",'application/json');
+    res.sendFile(path.resolve('Details.json'));
+})
 
 // wildcard 404
 app.use("*", (req, res) => res.status(404).send('<h1>Sorry, page not found!</h1>'));

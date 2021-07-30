@@ -1,0 +1,78 @@
+{
+    "_id": 1,
+    "stok": 1,
+    "price": 9000,
+    "title": "Cabai Merah",
+    "description": "<p class='text-xl leading-7 mb-6'>Cabe merah impor/lokal,  buah dan sayuran maupun bumbu. Digunakan sebagai salah satu bahan masakan yang menghasilkan rasa pedas..</p><p class='text-xl leading-7 mb-6'>Quality Greens Ornanic Cabe Merah Besar 100 g meruapakan cabai merah besar pilihan yang berkualitas yang sering dijadikan pelengkap makanan dan penambah rasa pedas</p>",
+    "imageUrl": "https://ninefresh.herokuapp.com/images/CabeSemillar-1.png",
+    "id_category": {
+      "_id": 1,
+      "title": "Buah"
+    },
+  
+    "relatedProducts": [
+      {
+        "_id": 1,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-1.png"
+      },
+      {
+        "_id": 2,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-2.png"
+      },
+      {
+        "_id": 3,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-3.png"
+      },
+      {
+        "_id": 4,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-4.png"
+      },
+      {
+        "_id": 5,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 39000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-5.png"
+      },
+      {
+        "_id": 6,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-6.png"
+      },
+      {
+        "_id": 7,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-8.png"
+      },
+      {
+        "_id": 8,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-9.png"
+      },
+      {
+        "_id": 9,
+        "id_category": 1,
+        "title": "Cabai Cabai",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-10.png"
+      }
+    ]
+}
