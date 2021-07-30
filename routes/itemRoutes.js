@@ -1,6 +1,7 @@
 import express from "express";
 import Item from "../models/Item.js";
 import AllItems from "../models/Items.js";
+import ItemsDetails from "../models/ItemsDetails.js";
 import multer from "multer";
 const router = express.Router();
 
@@ -205,20 +206,20 @@ router.get("/item/:id", (req, res) => {
 
 // post all items 
 router.post("/item", upload.single("upload"), async (req, res) => {
-    const halfUrl = req.protocol + '://' + req.get('host') + '/';
-    let allItems = new AllItems({
-        _id: req.body._id,
-        id_category: req.body.id_category,
-        title: req.body.title,
-        price: req.body.price,
-        // imageUrl: req.body.imageUrl
-        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-    })
+    // const halfUrl = req.protocol + '://' + req.get('host') + '/';
+    // let allItems = new AllItems({
+    //     _id: req.body._id,
+    //     id_category: req.body.id_category,
+    //     title: req.body.title,
+    //     price: req.body.price,
+    //     // imageUrl: req.body.imageUrl
+    //     imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+    // })
 
-    await allItems.save(err => {
-        if (err) return res.json({ error: "error" + err });
-        res.json({ status: "success" });
-    });
+    // await allItems.save(err => {
+    //     if (err) return res.json({ error: "error" + err });
+    //     res.json({ status: "success" });
+    // });
 
     
     /* initialize new documents
@@ -309,6 +310,74 @@ router.post("/item", upload.single("upload"), async (req, res) => {
             "imageUrl": "https://ninefresh.herokuapp.com/images/product-12.png"
         }
     ]
+
+    */
+   const documents = [
+        {
+        "_id": 13,
+        "id_category": 5,
+        "title": "Cabai Hijau Keriting (500 gram)",
+        "price": 20000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-1.png"
+        },
+        {
+        "_id": 14,
+        "id_category": 5,
+        "title": "Cabai Rawit Hijau (1 kg)",
+        "price": 20000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-2.png"
+        },
+        {
+        "_id": 15,
+        "id_category": 5,
+        "title": "Cabai Rawit Merah (1 kg)",
+        "price": 9000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-3.png"
+        },
+        {
+        "_id": 16,
+        "id_category": 5,
+        "title": "Paprika Merah (1 buah)",
+        "price": 15000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-4.png"
+        },
+        {
+        "_id": 17,
+        "id_category": 5,
+        "title": "Paprika Kuning (1 buah)",
+        "price": 10000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-5.png"
+        },
+        {
+        "_id": 18,
+        "id_category": 5,
+        "title": "Paprika Hijau (1 buah)",
+        "price": 7000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-6.png"
+        },
+        {
+        "_id": 19,
+        "id_category": 5,
+        "title": "Cabai Ceri (10 buah)",
+        "price": 2000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-8.png"
+        },
+        {
+        "_id": 20,
+        "id_category": 5,
+        "title": "Bubuk Cabai Cayenne (1 kg)",
+        "price": 10000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-9.png"
+        },
+        {
+        "_id": 21,
+        "id_category": 5,
+        "title": "Cabai Jalapeno (250 gram)",
+        "price": 30000,
+        "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-10.png"
+        }
+    ]
+    
     AllItems.insertMany(documents)
         .then(() => {
             res.send("SUCCESS!");
@@ -316,7 +385,6 @@ router.post("/item", upload.single("upload"), async (req, res) => {
         .catch((err) => {
             res.json({err: "error" + err});
         });
-    */
 })
 
 // update one from all item
@@ -365,20 +433,22 @@ router.delete("/item-delete", async (req, res) => {
 // get item details
 router.get("/item-details", (req, res) => {
     if (req.query.search) {
-        AllItems
+        ItemsDetails
             .find({ title: { $regex: req.query.search, $options: 'si' }})
             .sort({'_id': 1})
-            .populate({ path: "id_category", select: "_id category" })
+            .populate({ path: "relatedProducts", select: "-__v", populate: { path: "id_category", select: "_id category"}})
+            .populate({ path: "id_product_ref", select: "-imageUrl -__v", populate: { path: "id_category", select: "_id category"}})
             .select("-__v")
             .exec((err, data) => {
                 if (err) return res.status(500).send("error" + err);
                 return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
             });
     } else {
-        AllItems
+        ItemsDetails
             .find({})
             .sort({'_id': 1})
-            .populate({ path: "id_category", select: "_id category" })
+            .populate({ path: "relatedProducts", select: "-__v", populate: { path: "id_category", select: "_id category"}})
+            .populate({ path: "id_product_ref", select: "-imageUrl -__v", populate: { path: "id_category", select: "_id category"}})
             .select("-__v")
             .exec((err, data) => {
                 if (err) return res.status(500).send("error" + err);
@@ -387,11 +457,12 @@ router.get("/item-details", (req, res) => {
     }
 })
 
-// get one from all item
+// get one from item details
 router.get("/item-details/:id", (req, res) => {
-    AllItems
+    ItemsDetails
         .findOne({ _id: req.params.id })
-        .populate({ path: "id_category", select: "_id category" })
+        .populate({ path: "relatedProducts", select: "-__v", populate: { path: "id_category", select: "_id category"}})
+        .populate({ path: "id_product_ref", select: "-imageUrl -__v", populate: { path: "id_category", select: "_id category"}})
         .select("-__v")
         .exec((err, data) => {
             if (err) return res.status(500).send("error");
@@ -400,21 +471,48 @@ router.get("/item-details/:id", (req, res) => {
 })
 
 // post all items 
-router.post("/item", upload.single("upload"), async (req, res) => {
-    const halfUrl = req.protocol + '://' + req.get('host') + '/';
-    let allItems = new AllItems({
-        _id: req.body._id,
-        id_category: req.body.id_category,
-        title: req.body.title,
-        price: req.body.price,
-        // imageUrl: req.body.imageUrl
-        imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-    })
+router.post("/item-details", upload.single("upload"), async (req, res) => {
+    // const halfUrl = req.protocol + '://' + req.get('host') + '/';
+    // let allItems = new AllItems({
+    //     _id: req.body._id,
+    //     id_category: req.body.id_category,
+    //     title: req.body.title,
+    //     price: req.body.price,
+    //     // imageUrl: req.body.imageUrl
+    //     imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+    // })
 
-    await allItems.save(err => {
-        if (err) return res.json({ error: "error" + err });
-        res.json({ status: "success" });
-    });
+    // await allItems.save(err => {
+    //     if (err) return res.json({ error: "error" + err });
+    //     res.json({ status: "success" });
+    // });
+
+    const documents = [
+        {
+        "_id": 1,
+        "stok": 500,
+        "description": "<p class='text-xl leading-7 mb-6'>Cabe merah impor/lokal,  buah dan sayuran maupun bumbu. Digunakan sebagai salah satu bahan masakan yang menghasilkan rasa pedas..</p><p class='text-xl leading-7 mb-6'>Quality Greens Ornanic Cabe Merah Besar 100 g meruapakan cabai merah besar pilihan yang berkualitas yang sering dijadikan pelengkap makanan dan penambah rasa pedas</p>",
+        "imageUrl": "https://ninefresh.herokuapp.com/images/CabaiSemillar-1.png",
+        "id_product_ref": 1,
+        "relatedProducts": [13, 14, 15, 16, 17, 18, 19, 20]
+    }]
+
+    ItemsDetails.insertMany(documents)
+        .then(() => {
+            res.send("SUCCESS!");
+        })
+        .catch((err) => {
+            res.json({err: "error" + err});
+        });
+})
+
+router.delete("/item-details-delete", async (req, res) => {
+    try {
+        await ItemsDetails.deleteMany();
+        res.send("ok removed");
+    } catch {
+        res.status(404).json({ error: "error, theres no item to be removed" });
+    }
 })
 
 export default router;
