@@ -3,8 +3,8 @@ import Item from "./Item.js";
 const { Schema } = mongoose;
 
 const AllItemsSchema = new Schema({
-    id: Number,
-    id_category: {type: mongoose.Schema.Types.ObjectId, ref: 'Item'},
+    _id: Number,
+    id_category: {type: Number, ref: 'Item'},
     title: String,
     price: Number,
     category: String,
