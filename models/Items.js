@@ -8,6 +8,8 @@ const AllItemsSchema = new Schema({
     title: String,
     price: Number,
     imageUrl: String,
+    stok: Number,
+    totalPenjualan: Number
 })
 
 const AllItems = mongoose.model("AllItems", AllItemsSchema);

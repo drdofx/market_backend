@@ -14,7 +14,7 @@ app.use(cors());
 app.use('/images', express.static('images'));
 app.use(express.json());
 
-app.use('/', userRoutes);
+// app.use('/', userRoutes);
 app.use('/api/market', routes);
 
 // used for testing static json files
