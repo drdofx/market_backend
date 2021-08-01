@@ -22,42 +22,43 @@ export default class MerchantIdentifier {
     }
 
     static async apiPostMerchant(req, res) {
-        // let merchant = new Merchant({
-        //     _id: req.body._id,
-        //     nama: req.body.nama,
-        //     alamat: req.body.alamat,
-        //     kelurahan: req.body.kelurahan,
-        //     kecamatan: req.body.kecamatan,
-        //     kota: req.body.kota,
-        //     kodePos: req.body.kodePos,
-        //     nomor_telepon: req.body.nomor_telepon,
-        // })
+        let merchants = new Merchant({
+            _id: req.body._id,
+            nama: req.body.nama,
+            alamat: req.body.alamat,
+            kelurahan: req.body.kelurahan,
+            kecamatan: req.body.kecamatan,
+            kota: req.body.kota,
+            kodePos: req.body.kodePos,
+            nomor_telepon: req.body.nomor_telepon,
+            userOrders: req.body.userOrders
+        })
 
-        // await merchant.save(err => {
-        //     if (err) return res.json({ error: "error" + err });
-        //     res.json({ status: "success" });
-        // });
+        await merchants.save(err => {
+            if (err) return res.json({ error: "error" + err });
+            res.json({ status: "success" });
+        });
 
-        const documents = [
-            {
-                _id: 1,
-                nama: "WARUNG SEMBAKO Bapak Sumarto",
-                alamat: "Jl. Tegal Parang Selatan I No.20, RT.2/RW.5",
-                kelurahan: "Tegal Parang",
-                kecamatan: "Mampang Prapatan",
-                kota: "Jakarta Selatan",
-                kodePos: 12790,
-                nomor_telepon: "085696037133",
-                userOrders: [],
-            }
-        ]
+        // const documents = [
+        //     {
+        //         _id: 1,
+        //         nama: "WARUNG SEMBAKO Bapak Sumarto",
+        //         alamat: "Jl. Tegal Parang Selatan I No.20, RT.2/RW.5",
+        //         kelurahan: "Tegal Parang",
+        //         kecamatan: "Mampang Prapatan",
+        //         kota: "Jakarta Selatan",
+        //         kodePos: 12790,
+        //         nomor_telepon: "085696037133",
+        //         userOrders: [],
+        //     }
+        // ]
 
-        Merchant.insertMany(documents)
-            .then(() => {
-                res.send("SUCCESS!");
-            })
-            .catch((err) => {
-                res.json({err: "error" + err});
-            });
+        // Merchant.insertMany(documents)
+        //     .then(() => {
+        //         res.send("SUCCESS!");
+        //     })
+        //     .catch((err) => {
+        //         res.json({err: "error" + err});
+        //     });
     }
 }

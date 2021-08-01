@@ -83,18 +83,18 @@ export default class Item {
             {
                 "_id": 2,
                 "id_category": 4,
-                "title": "Ikan Tuna",
-                "price": "55000",
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png",
-                "stok": 500,
+                "title": "Telur Ayam Konvensional",
+                "price": "19000",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png",
+                "stok": 250,
                 "totalPenjualan": 49
             },
             {
                 "_id": 3,
                 "id_category": 4,
-                "title": "Telur Ayam Konvensional",
-                "price": "19000",
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png",
+                "title": "Ikan Tuna",
+                "price": "55000",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png",
                 "stok": 500,
                 "totalPenjualan": 48
             },
@@ -247,45 +247,6 @@ export default class Item {
                 "id_category": 5,
                 "title": "Bubuk Cabai Cayenne (1 kg)",
                 "price": 10000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-8.png",
-                "stok": 500,
-                "totalPenjualan": 31
-            },
-            {
-                "_id": 21,
-                "id_category": 5,
-                "title": "Cabai Jalapeno (250 gram)",
-                "price": 30000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-9.png",
-                "stok": 500,
-                "totalPenjualan": 30
-            }
-        ]
-        
-        const documents = [
-            {
-                "_id": 3,
-                "id_category": 4,
-                "title": "Telur Ayam Konvensional",
-                "price": "19000",
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png",
-                "stok": 500,
-                "totalPenjualan": 48
-            },
-            {
-                "_id": 19,
-                "id_category": 5,
-                "title": "Cabai Ceri (10 buah)",
-                "price": 2000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-7.png",
-                "stok": 500,
-                "totalPenjualan": 32
-            },
-            {
-                "_id": 20,
-                "id_category": 5,
-                "title": "Bubuk Cabai Cayenne (1 kg)",
-                "price": 10000,
                 "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-11.png",
                 "stok": 500,
                 "totalPenjualan": 31
@@ -377,7 +338,7 @@ export default class Item {
             if (req.body.totalPenjualan) allItems.totalPenjualan = req.body.totalPenjualan; 
     
             await allItems.save(err => {
-                if (err) return res.json({ error: "error" });
+                if (err) return res.json({ error: err + "error" });
                 res.json({ status: "success" });
             });
         } catch {

@@ -60,6 +60,9 @@ router
 // get one from item details
 router.route("/item-details/:id").get(ItemDetails.apiGetItemDetailsById);
 
+// get item details based on item id ref (one-to-one)
+router.route("/item-details-ref/:id").get(ItemDetails.apiGetItemDetailsByMerchant);
+
 // delete all item details
 router.route("/item-details-delete").delete(ItemDetails.apiDeleteItemDetails);
 

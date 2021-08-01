@@ -3,7 +3,7 @@ import cors from "cors";
 const app = express();
 
 import dbConnect from "./dbconnection.js";
-import routes from "./routes/itemRoutes.js"
+import routes from "./routes/routes.js"
 import userRoutes from "./routes/userRoutes.js";
 import path from "path";
 const port = process.env.PORT || 8000;

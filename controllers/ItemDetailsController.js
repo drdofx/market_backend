@@ -42,6 +42,23 @@ export default class ItemDetails {
             });
     }
 
+    static apiGetItemDetailsByMerchant(req, res) {
+        ItemsDetails
+            .find()
+            .populate({ path: "merchant", match: { kodePos: req.params.id }, select: "-userOrders -__v" })
+            .populate({ path: "id_product_ref", select: "-__v", populate: { path: "id_category", select: "_id category"}})
+            .select("id_product_ref")
+            .exec((err, datas) => {
+                if (err) return res.status(500).send("error" + err);
+                
+                const new_datas = datas.filter(data => {
+                    return data.merchant;
+                })
+                return (new_datas.length > 0 ? res.json(new_datas) : res.json(datas));
+            });
+    }
+
+
     static async apiPostItemDetails(req, res) {
         // const halfUrl = req.protocol + '://' + req.get('host') + '/';
         // let allItems = new AllItems({
@@ -72,8 +89,88 @@ export default class ItemDetails {
                 "description": "<p class='text-xl leading-7 mb-6'>Telor ayam konvensional adalah jenis telur yang mudah didapat dan harganya murah, serta memiliki banyak manfaat bagi kesehatan</p><p class='text-xl leading-7 mb-6'>Telur konvensional yang kami jual kualitasnya sudah pasti terjaga dan terjamin</p>",
                 "imageUrl": "https://ninefresh.herokuapp.com/images/TelurSemillar.png",
                 "merchant": 1,
-                "id_product_ref": 3,
+                "id_product_ref": 2,
                 "relatedProducts": [22, 23, 24]
+            },
+            {
+                "_id": 3,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 1,
+                "id_product_ref": 3,
+                "relatedProducts": []
+            },
+            {
+                "_id": 4,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 1,
+                "id_product_ref": 4,
+                "relatedProducts": []
+            },
+            {
+                "_id": 5,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 1,
+                "id_product_ref": 5,
+                "relatedProducts": []
+            },
+            {
+                "_id": 6,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 1,
+                "id_product_ref": 6,
+                "relatedProducts": []
+            },
+            {
+                "_id": 7,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 7,
+                "relatedProducts": []
+            },
+            {
+                "_id": 8,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 8,
+                "relatedProducts": []
+            },
+            {
+                "_id": 9,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 9,
+                "relatedProducts": []
+            },
+            {
+                "_id": 10,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 10,
+                "relatedProducts": []
+            },
+            {
+                "_id": 11,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 11,
+                "relatedProducts": []
+            },
+            {
+                "_id": 12,
+                "description": "-",
+                "imageUrl": "-",
+                "merchant": 2,
+                "id_product_ref": 12,
+                "relatedProducts": []
             },
         ]
 
