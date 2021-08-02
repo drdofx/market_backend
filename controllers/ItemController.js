@@ -51,24 +51,24 @@ export default class Item {
     }
 
     static async apiPostItem(req, res) {
-        const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        let allItems = new AllItems({
-            _id: req.body._id,
-            id_category: req.body.id_category,
-            title: req.body.title,
-            price: req.body.price,
-            // imageUrl: req.body.imageUrl
-            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/"),
-            stok: req.body.stok,
-            totalPenjualan: req.body.totalPenjualan
-        })
+        // const halfUrl = req.protocol + '://' + req.get('host') + '/';
+        // let allItems = new AllItems({
+        //     _id: req.body._id,
+        //     id_category: req.body.id_category,
+        //     title: req.body.title,
+        //     price: req.body.price,
+        //     // imageUrl: req.body.imageUrl
+        //     imageUrl: halfUrl + req.file.path.replace(/\\/g, "/"),
+        //     stok: req.body.stok,
+        //     totalPenjualan: req.body.totalPenjualan
+        // })
 
-        await allItems.save(err => {
-            if (err) return res.json({ error: "error" + err });
-            res.json({ status: "success" });
-        });
+        // await allItems.save(err => {
+        //     if (err) return res.json({ error: "error" + err });
+        //     res.json({ status: "success" });
+        // });
         
-        /* initialize new documents
+        // initialize new documents
         
         const documents = [
             {
@@ -84,7 +84,7 @@ export default class Item {
                 "_id": 2,
                 "id_category": 4,
                 "title": "Telur Ayam Konvensional",
-                "price": "19000",
+                "price": 19000,
                 "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png",
                 "stok": 250,
                 "totalPenjualan": 49
@@ -93,7 +93,7 @@ export default class Item {
                 "_id": 3,
                 "id_category": 4,
                 "title": "Ikan Tuna",
-                "price": "55000",
+                "price": 55000,
                 "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png",
                 "stok": 500,
                 "totalPenjualan": 48
@@ -102,7 +102,7 @@ export default class Item {
                 "_id": 4,
                 "id_category": 3,
                 "title": "Bawang Bombay",
-                "price": "15000",
+                "price": 15000,
                 "imageUrl": "https://ninefresh.herokuapp.com/images/product-4.png",
                 "stok": 500,
                 "totalPenjualan": 47
@@ -184,7 +184,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai Hijau Keriting (500 gram)",
                 "price": 20000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-1.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-13.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-1.png",
                 "stok": 500,
                 "totalPenjualan": 38
             },
@@ -193,7 +194,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai Rawit Hijau (1 kg)",
                 "price": 20000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-2.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-14.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-2.png",
                 "stok": 500,
                 "totalPenjualan": 37
             },
@@ -202,7 +204,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai Rawit Merah (1 kg)",
                 "price": 9000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-3.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-15.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-3.png",
                 "stok": 500,
                 "totalPenjualan": 36
             },
@@ -211,7 +214,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Paprika Merah (1 buah)",
                 "price": 15000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-4.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-16.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-4.png",
                 "stok": 500,
                 "totalPenjualan": 35
             },
@@ -220,7 +224,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Paprika Kuning (1 buah)",
                 "price": 10000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-5.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-17.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-5.png",
                 "stok": 500,
                 "totalPenjualan": 34
             },
@@ -229,7 +234,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Paprika Hijau (1 buah)",
                 "price": 7000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-6.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-18.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-6.png",
                 "stok": 500,
                 "totalPenjualan": 33
             },
@@ -238,7 +244,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai Ceri (10 buah)",
                 "price": 2000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-7.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-19.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-7.png",
                 "stok": 500,
                 "totalPenjualan": 32
             },
@@ -247,7 +254,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Bubuk Cabai Cayenne (1 kg)",
                 "price": 10000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-11.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-20.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-11.png",
                 "stok": 500,
                 "totalPenjualan": 31
             },
@@ -256,7 +264,8 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai Jalapeno (250 gram)",
                 "price": 30000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-9.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-21.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-9.png",
                 "stok": 500,
                 "totalPenjualan": 30
             },
@@ -265,7 +274,8 @@ export default class Item {
                 "id_category": 4,
                 "title": "Telur Organik",
                 "price": 25000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-12.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-22.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-12.png",
                 "stok": 500,
                 "totalPenjualan": 29
             },
@@ -274,7 +284,8 @@ export default class Item {
                 "id_category": 4,
                 "title": "Telur Ayam Kampung",
                 "price": 15000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-13.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-23.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-13.png",
                 "stok": 500,
                 "totalPenjualan": 28
             },
@@ -283,10 +294,182 @@ export default class Item {
                 "id_category": 4,
                 "title": "Telur Bebek",
                 "price": 20000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/semillar-14.png",
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-24.png",
+                "altImageUrl": "https://ninefresh.herokuapp.com/images/semillar-14.png",
                 "stok": 500,
                 "totalPenjualan": 27
-            }
+            },
+            {
+                "_id": 25,
+                "id_category": 3,
+                "title": "Bawang Merah",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-25.png",
+                "stok": 500,
+                "totalPenjualan": 26
+            },
+            {
+                "_id": 26,
+                "id_category": 3,
+                "title": "Bawang Putih",
+                "price": 20000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-26.png",
+                "stok": 500,
+                "totalPenjualan": 25
+            },
+            {
+                "_id": 27,
+                "id_category": 1,
+                "title": "Beras Putih",
+                "price": 10000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-27.png",
+                "stok": 500,
+                "totalPenjualan": 24
+            },
+            {
+                "_id": 28,
+                "id_category": 1,
+                "title": "Beras Merah",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-28.png",
+                "stok": 500,
+                "totalPenjualan": 23
+            },
+            {
+                "_id": 29,
+                "id_category": 6,
+                "title": "Gula Merah",
+                "price": 11000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-29.png",
+                "stok": 500,
+                "totalPenjualan": 22
+            },
+            {
+                "_id": 30,
+                "id_category": 1,
+                "title": "Jagung",
+                "price": 5000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-30.png",
+                "stok": 500,
+                "totalPenjualan": 21
+            },
+            {
+                "_id": 31,
+                "id_category": 1,
+                "title": "Kentang",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-31.png",
+                "stok": 500,
+                "totalPenjualan": 20
+            },
+            {
+                "_id": 32,
+                "id_category": 6,
+                "title": "Kayu Manis",
+                "price": 30000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-32.png",
+                "stok": 500,
+                "totalPenjualan": 19
+            },
+            {
+                "_id": 33,
+                "id_category": 6,
+                "title": "Lada",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-33.png",
+                "stok": 500,
+                "totalPenjualan": 18
+            },
+            {
+                "_id": 34,
+                "id_category": 2,
+                "title": "Milo",
+                "price": 4000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-34.png",
+                "stok": 500,
+                "totalPenjualan": 17
+            },
+            {
+                "_id": 35,
+                "id_category": 1,
+                "title": "Pasta La Fonte",
+                "price": 9000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-35.png",
+                "stok": 500,
+                "totalPenjualan": 16
+            },
+            {
+                "_id": 36,
+                "id_category": 1,
+                "title": "Roti",
+                "price": 6000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-36.png",
+                "stok": 500,
+                "totalPenjualan": 15
+            },
+            {
+                "_id": 37,
+                "id_category": 1,
+                "title": "Tahu",
+                "price": 5000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-37.png",
+                "stok": 500,
+                "totalPenjualan": 14
+            },
+            {
+                "_id": 38,
+                "id_category": 1,
+                "title": "Tempe",
+                "price": 7000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-38.png",
+                "stok": 500,
+                "totalPenjualan": 13
+            },
+            {
+                "_id": 39,
+                "id_category": 3,
+                "title": "Terong",
+                "price": 3000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-39.png",
+                "stok": 500,
+                "totalPenjualan": 12
+            },
+            {
+                "_id": 40,
+                "id_category": 5,
+                "title": "Tomat",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-40.png",
+                "stok": 500,
+                "totalPenjualan": 11
+            },
+            {
+                "_id": 41,
+                "id_category": 3,
+                "title": "Ubi Jalar",
+                "price": 8000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-41.png",
+                "stok": 500,
+                "totalPenjualan": 10
+            },
+            {
+                "_id": 42,
+                "id_category": 3,
+                "title": "Ubi Jalar Ungu",
+                "price": 10000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-42.png",
+                "stok": 500,
+                "totalPenjualan": 9
+            },
+            {
+                "_id": 43,
+                "id_category": 2,
+                "title": "UC1000",
+                "price": 9000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-43.png",
+                "stok": 500,
+                "totalPenjualan": 8
+            },
         ]
         AllItems.insertMany(documents)
             .then(() => {
@@ -296,7 +479,7 @@ export default class Item {
                 res.json({err: "error" + err});
             });
         
-        */
+        
     }
 
     static async apiDeleteOneItem(req, res) {
