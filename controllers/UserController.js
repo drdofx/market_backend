@@ -27,11 +27,14 @@ export default class UserIdentifier {
         // }
 
         let users = new User({
-            nama: req.body.nama,
-            alamat: req.body.alamat,
-            kodePos: req.body.kodePos,
-            nomor_hp: req.body.nomor_hp,
-            Items: req.body.Items
+            fullName: req.body.fullName,
+            address: req.body.address,
+            postalCode: req.body.postalCode,
+            phoneNumber: req.body.phoneNumber,
+            emailAddress: req.body.emailAddress,
+            courier: req.body.courier,
+            paymentMethod: req.body.paymentMethod ? req.body.paymentMethod : "COD",
+            items: req.body.items ? req.body.items : []
         })
     
         await users.save(err => {
@@ -74,6 +77,19 @@ export default class UserIdentifier {
             });
         } catch {
             res.status(404).json({ error: "error, item does not exist" });
+        }
+    }
+
+    static async apiDeleteUser(req, res) {
+        try {
+            if (req.headers.authorization === process.env.AUTH) {
+                await User.deleteMany();
+                res.send("ok removed");
+            } else {
+                res.status(403).send("not authorized");
+            }
+        } catch(e) {
+            res.status(404).json({ error: e + " error, theres no item to be removed" });
         }
     }
 }

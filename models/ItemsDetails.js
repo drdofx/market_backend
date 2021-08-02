@@ -9,7 +9,10 @@ const ItemsDetailsSchema = new Schema({
     imageUrl: String,
     merchant: {type: Number, ref: 'Merchant'},
     id_product_ref: {type: Number, ref: 'AllItems'},
-    relatedProducts: [{type: Number, ref: 'AllItems'}]
+    relatedProducts: [{type: Number, ref: 'AllItems'}],
+    stok: Number,
+    qty: Number,
+    totalPenjualan: Number
 })
 
 const ItemsDetails = mongoose.model("ItemsDetails", ItemsDetailsSchema);

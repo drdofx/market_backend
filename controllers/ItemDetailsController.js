@@ -45,7 +45,7 @@ export default class ItemDetails {
     static apiGetItemDetailsByMerchant(req, res) {
         ItemsDetails
             .find()
-            .populate({ path: "merchant", match: { kodePos: req.params.id }, select: "-userOrders -__v" })
+            .populate({ path: "merchant", match: { postalCode: req.params.id }, select: "-userOrders -__v" })
             .populate({ path: "id_product_ref", select: "-__v", populate: { path: "id_category", select: "_id category"}})
             .select("id_product_ref")
             .exec((err, datas) => {
@@ -82,7 +82,10 @@ export default class ItemDetails {
                 "imageUrl": "https://ninefresh.herokuapp.com/images/CabaiSemillar-1.png",
                 "merchant": 1,
                 "id_product_ref": 1,
-                "relatedProducts": [13, 14, 15, 16, 17, 18, 19, 20]
+                "relatedProducts": [13, 14, 15, 16, 17, 18, 19, 20],
+                "stok": 500,
+                "totalPenjualan": 50,
+                "qty": 0
             },
             {
                 "_id": 2,
@@ -90,7 +93,10 @@ export default class ItemDetails {
                 "imageUrl": "https://ninefresh.herokuapp.com/images/TelurSemillar.png",
                 "merchant": 1,
                 "id_product_ref": 2,
-                "relatedProducts": [22, 23, 24]
+                "relatedProducts": [22, 23, 24],
+                "stok": 250,
+                "totalPenjualan": 49,
+                "qty": 0
             },
             {
                 "_id": 3,
@@ -98,7 +104,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 1,
                 "id_product_ref": 3,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 48,
+                "qty": 0
             },
             {
                 "_id": 4,
@@ -106,7 +115,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 1,
                 "id_product_ref": 4,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 47,
+                "qty": 0
             },
             {
                 "_id": 5,
@@ -114,7 +126,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 1,
                 "id_product_ref": 5,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 46,
+                "qty": 0
             },
             {
                 "_id": 6,
@@ -122,7 +137,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 1,
                 "id_product_ref": 6,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 45,
+                "qty": 0
             },
             {
                 "_id": 7,
@@ -130,7 +148,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 7,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 44,
+                "qty": 0
             },
             {
                 "_id": 8,
@@ -138,7 +159,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 8,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 43,
+                "qty": 0
             },
             {
                 "_id": 9,
@@ -146,7 +170,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 9,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 42,
+                "qty": 0
             },
             {
                 "_id": 10,
@@ -154,7 +181,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 10,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 41,
+                "qty": 0
             },
             {
                 "_id": 11,
@@ -162,7 +192,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 11,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 40,
+                "qty": 0
             },
             {
                 "_id": 12,
@@ -170,7 +203,10 @@ export default class ItemDetails {
                 "imageUrl": "-",
                 "merchant": 2,
                 "id_product_ref": 12,
-                "relatedProducts": []
+                "relatedProducts": [],
+                "stok": 500,
+                "totalPenjualan": 39,
+                "qty": 0
             },
         ]
 
@@ -193,6 +229,26 @@ export default class ItemDetails {
             }
         } catch(e) {
             res.status(404).json({ error: e + " error, theres no item to be removed" });
+        }
+    }
+
+    static apiUpdateItemDetailsQuantityAndStock(req, res) {
+        if (req.params.change === "qtyup") {    
+            ItemsDetails
+                .updateOne( { _id: req.params.id, stok: {$gte: 0}, qty: {$gte: 0} }, {$inc : {'qty' : 1, 'stok': -1}}, {new: true})
+                .exec((err) => {
+                    if (err) return res.status(500).send("error");
+                    return res.send("ok");
+                })
+        } else if (req.params.change === "qtydown") {
+            ItemsDetails
+                .updateOne( { _id: req.params.id, stok: {$gt: 0}, qty: {$gt: 0} }, {$inc : {'qty' : -1, 'stok': 1}}, {new: true})
+                .exec((err) => {
+                    if (err) return res.status(500).send("error");
+                    return res.send("ok");
+                })
+        } else {
+            return res.status(404).send("sorry, wrong page!");
         }
     }
 }

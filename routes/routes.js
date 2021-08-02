@@ -61,6 +61,9 @@ router
 // get one from item details
 router.route("/item-details/:id").get(ItemDetails.apiGetItemDetailsById);
 
+// update item qty and stock
+router.route("/item-details/:change/:id").put(ItemDetails.apiUpdateItemDetailsQuantityAndStock);
+
 // get item details based on item id ref (one-to-one)
 router.route("/item-details-ref/:id").get(ItemDetails.apiGetItemDetailsByMerchant);
 
@@ -73,7 +76,8 @@ router.route("/item-details-delete").delete(ItemDetails.apiDeleteItemDetails);
 router
     .route("/merchant")
     .get(MerchantIdentifier.apiGetMerchant)
-    .post(MerchantIdentifier.apiPostMerchant);
+    .post(MerchantIdentifier.apiPostMerchant)
+    .delete(MerchantIdentifier.apiDeleteMerchant);
 
 // get one merchant info by id
 router.route("/merchant/:id").get(MerchantIdentifier.apiGetMerchantById);
@@ -84,7 +88,8 @@ router.route("/merchant/:id").get(MerchantIdentifier.apiGetMerchantById);
 router
     .route("/user")
     .get(UserIdentifier.apiGetUser)
-    .post(UserIdentifier.apiPostUser);
+    .post(UserIdentifier.apiPostUser)
+    .delete(UserIdentifier.apiDeleteUser);
 
 // get one merchant info by id
 router

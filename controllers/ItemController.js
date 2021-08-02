@@ -76,108 +76,84 @@ export default class Item {
                 "id_category": 5,
                 "title": "Cabai",
                 "price": 9000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-1.png",
-                "stok": 500,
-                "totalPenjualan": 50
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-1.png"
             },
             {
                 "_id": 2,
                 "id_category": 4,
                 "title": "Telur Ayam Konvensional",
                 "price": 19000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png",
-                "stok": 250,
-                "totalPenjualan": 49
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-3.png"
             },
             {
                 "_id": 3,
                 "id_category": 4,
                 "title": "Ikan Tuna",
                 "price": 55000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png",
-                "stok": 500,
-                "totalPenjualan": 48
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-2.png"
             },
             {
                 "_id": 4,
                 "id_category": 3,
                 "title": "Bawang Bombay",
                 "price": 15000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-4.png",
-                "stok": 500,
-                "totalPenjualan": 47
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-4.png"
             },
             {
                 "_id": 5,
                 "id_category": 6,
                 "title": "Gula Pasir Putih",
                 "price": 11000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-5.png",
-                "stok": 500,
-                "totalPenjualan": 46
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-5.png"
             },
             {
                 "_id": 6,
                 "id_category": 6,
                 "title": "Minyak Goreng",
                 "price": 25000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-6.png",
-                "stok": 500,
-                "totalPenjualan": 45
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-6.png"
             },
             {
                 "_id": 7,
                 "id_category": 6,
                 "title": "Mentega",
                 "price": 8000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-7.png",
-                "stok": 500,
-                "totalPenjualan": 44
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-7.png"
             },
             {
                 "_id": 8,
                 "id_category": 3,
                 "title": "Kembang Kol",
                 "price": 6000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-8.png",
-                "stok": 500,
-                "totalPenjualan": 43
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-8.png"
             },
             {
                 "_id": 9,
                 "id_category": 6,
                 "title": "Kecap Manis",
                 "price": 10000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-9.png",
-                "stok": 500,
-                "totalPenjualan": 42
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-9.png"
             },
             {
                 "_id": 10,
                 "id_category": 3,
                 "title": "Daun Bawang",
                 "price": 5000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-10.png",
-                "stok": 500,
-                "totalPenjualan": 41
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-10.png"
             },
             {
                 "_id": 11,
                 "id_category": 3,
                 "title": "Daun Selada Keriting",
                 "price": 15000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-11.png",
-                "stok": 500,
-                "totalPenjualan": 40
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-11.png"
             },
             {
                 "_id": 12,
                 "id_category": 1,
                 "title": "Indomie Goreng 5 Pack",
                 "price": 10000,
-                "imageUrl": "https://ninefresh.herokuapp.com/images/product-12.png",
-                "stok": 500,
-                "totalPenjualan": 39
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-12.png"
             },
             {
                 "_id": 13,

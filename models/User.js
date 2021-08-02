@@ -3,14 +3,21 @@ import ItemsDetails from "./ItemsDetails.js";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    nama: String,
-    alamat: String,
-    kodePos: Number,
-    nomor_hp: {
+    fullName: String,
+    address: String,
+    postalCode: Number,
+    phoneNumber: {
         type: String,
         required: true,
         unique: true
     },
+    emailAddress: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    courier: String,
+    paymentMethod: String,
     items: [{type: Number, ref: 'ItemsDetails'}]
 })
 

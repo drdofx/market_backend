@@ -9,7 +9,7 @@ const merchantSchema = new Schema({
     kelurahan: String,
     kecamatan: String,
     kota: String,
-    kodePos: Number,
+    postalCode: Number,
     nomor_telepon: String,
     userOrders: [{type: Number, ref: 'User'}]
 })
