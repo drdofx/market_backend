@@ -3,7 +3,6 @@ import ItemsDetails from "./ItemsDetails.js";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    _id: Number,
     nama: String,
     alamat: String,
     kodePos: Number,

@@ -3,6 +3,7 @@ import ItemCategory from "../controllers/ItemCategoryController.js";
 import Item from "../controllers/ItemController.js";
 import ItemDetails from "../controllers/ItemDetailsController.js";
 import MerchantIdentifier from "../controllers/MerchantController.js";
+import UserIdentifier from "../controllers/UserController.js";
 import upload from "../middleware/Upload.js";
 
 const router = express.Router();
@@ -76,5 +77,19 @@ router
 
 // get one merchant info by id
 router.route("/merchant/:id").get(MerchantIdentifier.apiGetMerchantById);
+
+//----------------------------------------------------
+
+// get or post merchant info
+router
+    .route("/user")
+    .get(UserIdentifier.apiGetUser)
+    .post(UserIdentifier.apiPostUser);
+
+// get one merchant info by id
+router
+    .route("/user/:id")
+    .get(UserIdentifier.apiGetUserById)
+    .put(UserIdentifier.apiUpdateItemByUser);
 
 export default router;
