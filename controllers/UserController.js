@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import ItemsDetails from "../models/ItemsDetails.js";
 
 export default class UserIdentifier {
     static apiGetUser(req, res) {
@@ -30,8 +31,16 @@ export default class UserIdentifier {
             if (req.body.postalCode) findUser.postalCode = req.body.postalCode;
             if (req.body.courier) findUser.courier = req.body.courier;
             if (req.body.paymentMethod) findUser.paymentMethod = req.body.paymentMethod; 
-            if (req.body.items) findUser.items.push(...req.body.items);
-            
+            if (req.body.items) {
+                // if (Object.values(req.body.items).includes(req.body.items._id)) {}
+                findUser.items.push(...req.body.items);
+                req.body.items.map(el => {
+                    ItemsDetails
+                        .updateOne({ _id: el._id }, { $inc: { stok: -el.qty } })
+                        .exec();
+                })
+            }
+
             await findUser.save(err => {
                     if (err) return res.json({ error: "error" + err });
                     console.log("nice");
@@ -48,7 +57,15 @@ export default class UserIdentifier {
                 paymentMethod: req.body.paymentMethod ? req.body.paymentMethod : "COD",
                 items: req.body.items ? req.body.items : []
             })
-        
+            
+            if (req.body.items) {
+                req.body.items.map(el => {
+                    ItemsDetails
+                        .updateOne({ _id: el._id }, { $inc: { stok: -el.qty } })
+                        .exec();
+                })
+            }
+
             await users.save(err => {
                 if (err) return res.json({ error: "error" + err });
                 console.log("nice");
