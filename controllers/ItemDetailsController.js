@@ -60,22 +60,22 @@ export default class ItemDetails {
 
 
     static async apiPostItemDetails(req, res) {
-        // const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        // let allItems = new AllItems({
-        //     _id: req.body._id,
-        //     id_category: req.body.id_category,
-        //     title: req.body.title,
-        //     price: req.body.price,
-        //     // imageUrl: req.body.imageUrl
-        //     imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-        // })
+        const halfUrl = req.protocol + '://' + req.get('host') + '/';
+        let allItems = new AllItems({
+            _id: req.body._id,
+            id_category: req.body.id_category,
+            title: req.body.title,
+            price: req.body.price,
+            // imageUrl: req.body.imageUrl
+            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
+        })
 
-        // await allItems.save(err => {
-        //     if (err) return res.json({ error: "error" + err });
-        //     res.json({ status: "success" });
-        // });
+        await allItems.save(err => {
+            if (err) return res.json({ error: "error" + err });
+            res.json({ status: "success" });
+        });
 
-        const documents = [
+        /* const documents = [
             {
                 "_id": 1,
                 "description": "<p class='text-xl leading-7 mb-6'>Cabe merah impor/lokal,  buah dan sayuran maupun bumbu. Digunakan sebagai salah satu bahan masakan yang menghasilkan rasa pedas</p><p class='text-xl leading-7 mb-6'>Quality Greens Ornanic Cabe Merah Besar 100 g meruapakan cabai merah besar pilihan yang berkualitas yang sering dijadikan pelengkap makanan dan penambah rasa pedas</p>",
@@ -217,6 +217,7 @@ export default class ItemDetails {
             .catch((err) => {
                 res.json({err: "error" + err});
             });
+        */
     }
 
     static async apiDeleteItemDetails(req, res) {

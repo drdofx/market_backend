@@ -51,24 +51,24 @@ export default class Item {
     }
 
     static async apiPostItem(req, res) {
-        // const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        // let allItems = new AllItems({
-        //     _id: req.body._id,
-        //     id_category: req.body.id_category,
-        //     title: req.body.title,
-        //     price: req.body.price,
-        //     // imageUrl: req.body.imageUrl
-        //     imageUrl: halfUrl + req.file.path.replace(/\\/g, "/"),
-        //     stok: req.body.stok,
-        //     totalPenjualan: req.body.totalPenjualan
-        // })
+        const halfUrl = req.protocol + '://' + req.get('host') + '/';
+        let allItems = new AllItems({
+            _id: req.body._id,
+            id_category: req.body.id_category,
+            title: req.body.title,
+            price: req.body.price,
+            // imageUrl: req.body.imageUrl
+            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/"),
+            stok: req.body.stok,
+            totalPenjualan: req.body.totalPenjualan
+        })
 
-        // await allItems.save(err => {
-        //     if (err) return res.json({ error: "error" + err });
-        //     res.json({ status: "success" });
-        // });
+        await allItems.save(err => {
+            if (err) return res.json({ error: "error" + err });
+            res.json({ status: "success" });
+        });
         
-        // initialize new documents
+        /* initialize new documents
         
         const documents = [
             {
@@ -455,7 +455,7 @@ export default class Item {
                 res.json({err: "error" + err});
             });
         
-        
+        */
     }
 
     static async apiDeleteOneItem(req, res) {

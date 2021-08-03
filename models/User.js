@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import ItemsDetails from "./ItemsDetails.js";
+// import ItemsDetails from "./ItemsDetails.js";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -18,7 +18,12 @@ const userSchema = new Schema({
     },
     courier: String,
     paymentMethod: String,
-    items: [{type: Number, ref: 'ItemsDetails'}]
+    items: { type : Array },
+    date: {
+        type: Date,
+        default: Date.now
+    }
+    // items: [{type: Number, ref: 'ItemsDetails'}]
 })
 
 const User = mongoose.model("User", userSchema);

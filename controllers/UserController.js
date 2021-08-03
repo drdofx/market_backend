@@ -13,7 +13,7 @@ export default class UserIdentifier {
 
     static apiGetUserById(req, res) {
         User
-            .findOne({ nomor_hp: req.params.id })
+            .findOne({ phoneNumber: req.params.id })
             .select("-__v")
             .exec((err, data) => {
                 if (err) return res.status(500).send("error");
@@ -22,48 +22,39 @@ export default class UserIdentifier {
     }
 
     static async apiPostUser(req, res) {
-        // if (User.findOne({ nomor_hp: req.body.nomor_hp })) {
-        //     res.send("failed");
-        // }
+        let findUser = await User.findOne({ phoneNumber: req.body.phoneNumber }).select("-__v");
 
-        let users = new User({
-            fullName: req.body.fullName,
-            address: req.body.address,
-            postalCode: req.body.postalCode,
-            phoneNumber: req.body.phoneNumber,
-            emailAddress: req.body.emailAddress,
-            courier: req.body.courier,
-            paymentMethod: req.body.paymentMethod ? req.body.paymentMethod : "COD",
-            items: req.body.items ? req.body.items : []
-        })
-    
-        await users.save(err => {
-            if (err) return res.json({ error: "error" + err });
-            console.log("nice");
-            res.json({ status: "success" });
-        });
-    
-            // const documents = [
-            //     {
-            //         _id: 1,
-            //         nama: "WARUNG SEMBAKO Bapak Sumarto",
-            //         alamat: "Jl. Tegal Parang Selatan I No.20, RT.2/RW.5",
-            //         kelurahan: "Tegal Parang",
-            //         kecamatan: "Mampang Prapatan",
-            //         kota: "Jakarta Selatan",
-            //         kodePos: 12790,
-            //         nomor_telepon: "085696037133",
-            //         userOrders: [],
-            //     }
-            // ]
-    
-            // Merchant.insertMany(documents)
-            //     .then(() => {
-            //         res.send("SUCCESS!");
-            //     })
-            //     .catch((err) => {
-            //         res.json({err: "error" + err});
-            //     });
+        if (findUser) {
+            if (req.body.fullName) findUser.fullName = req.body.fullName;
+            if (req.body.address) findUser.address = req.body.address;
+            if (req.body.postalCode) findUser.postalCode = req.body.postalCode;
+            if (req.body.courier) findUser.courier = req.body.courier;
+            if (req.body.paymentMethod) findUser.paymentMethod = req.body.paymentMethod; 
+            if (req.body.items) findUser.items.push(...req.body.items);
+            
+            await findUser.save(err => {
+                    if (err) return res.json({ error: "error" + err });
+                    console.log("nice");
+                    res.json({ status: "success" });
+            });
+        } else {
+            let users = new User({
+                fullName: req.body.fullName,
+                address: req.body.address,
+                postalCode: req.body.postalCode,
+                phoneNumber: req.body.phoneNumber,
+                emailAddress: req.body.emailAddress,
+                courier: req.body.courier,
+                paymentMethod: req.body.paymentMethod ? req.body.paymentMethod : "COD",
+                items: req.body.items ? req.body.items : []
+            })
+        
+            await users.save(err => {
+                if (err) return res.json({ error: "error" + err });
+                console.log("nice");
+                res.json({ status: "success" });
+            });
+        }
     }
 
     static async apiUpdateItemByUser(req, res) {
