@@ -446,6 +446,51 @@ export default class Item {
                 "stok": 500,
                 "totalPenjualan": 8
             },
+            {
+                "_id": 44,
+                "id_category": 2,
+                "title": "Bear Brand Gold",
+                "price": 7000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-44.png",
+                "stok": 500,
+                "totalPenjualan": 7
+            },
+            {
+                "_id": 45,
+                "id_category": 2,
+                "title": "Frisian Flag",
+                "price": 15000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-45.png",
+                "stok": 500,
+                "totalPenjualan": 6
+            },
+            {
+                "_id": 46,
+                "id_category": 2,
+                "title": "Hemaviton C1000",
+                "price": 4000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-46.png",
+                "stok": 500,
+                "totalPenjualan": 5
+            },
+            {
+                "_id": 47,
+                "id_category": 2,
+                "title": "Hydro Coco",
+                "price": 7000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-47.png",
+                "stok": 500,
+                "totalPenjualan": 4
+            },
+            {
+                "_id": 48,
+                "id_category": 2,
+                "title": "Ultra Milk",
+                "price": 3000,
+                "imageUrl": "https://ninefresh.herokuapp.com/images/product-48.png",
+                "stok": 500,
+                "totalPenjualan": 3
+            },
         ]
         AllItems.insertMany(documents)
             .then(() => {
