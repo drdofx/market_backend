@@ -6,7 +6,7 @@ import dbConnect from "./dbconnection.js";
 import routes from "./routes/routes.js"
 // import userRoutes from "./unused/userRoutes.js";
 import path from "path";
-import clientAPI from "./api/send_sms.js";
+// import clientAPI from "./api/send_sms.js";
 
 const port = process.env.PORT || 8000;
 
@@ -34,7 +34,7 @@ app.get('/testdetails', (req, res) => {
 })
 
 // send sms
-app.use('/sms', clientAPI);
+// app.use('/sms', clientAPI);
 
 // wildcard 404
 app.use("*", (req, res) => res.status(404).send('<h1>Sorry, page not found!</h1>'));
