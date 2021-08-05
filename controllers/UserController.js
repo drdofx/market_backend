@@ -76,13 +76,17 @@ export default class UserIdentifier {
 
     static async apiUpdateItemByUser(req, res) {
         try {
-            let user = await User.findOne({ nomor_hp: req.params.id })
-            user.Items.push(req.body.Item)
-    
-            await user.save(err => {
-                if (err) return res.json({ error: err + "error" });
-                res.json({ status: "success" });
-            });
+            if (req.headers.authorization === process.env.AUTH) {
+                let user = await User.findOne({ nomor_hp: req.params.id })
+                user.Items.push(req.body.Item)
+        
+                await user.save(err => {
+                    if (err) return res.json({ error: err + "error" });
+                    res.json({ status: "success" });
+                });
+            } else {
+                res.status(403).send("not authorized");
+            }
         } catch {
             res.status(404).json({ error: "error, item does not exist" });
         }

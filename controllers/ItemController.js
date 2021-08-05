@@ -51,23 +51,25 @@ export default class Item {
     }
 
     static async apiPostItem(req, res) {
-        const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        let allItems = new AllItems({
-            _id: req.body._id,
-            id_category: req.body.id_category,
-            title: req.body.title,
-            price: req.body.price,
-            // imageUrl: req.body.imageUrl
-            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/"),
-            stok: req.body.stok,
-            totalPenjualan: req.body.totalPenjualan
-        })
+        if (req.headers.authorization === process.env.AUTH) {
+            const halfUrl = req.protocol + '://' + req.get('host') + '/';
+            let allItems = new AllItems({
+                _id: req.body._id,
+                id_category: req.body.id_category,
+                title: req.body.title,
+                price: req.body.price,
+                imageUrl: req.file ? halfUrl + req.file.path.replace(/\\/g, "/") : req.body.imageUrl,
+                stok: req.body.stok,
+                totalPenjualan: req.body.totalPenjualan
+            })
 
-        await allItems.save(err => {
-            if (err) return res.json({ error: "error" + err });
-            res.json({ status: "success" });
-        });
-        
+            await allItems.save(err => {
+                if (err) return res.json({ error: "error" + err });
+                res.json({ status: "success" });
+            });
+        } else {
+            res.status(403).send("not authorized");
+        }
         /* initialize new documents
         
         const documents = [
@@ -533,18 +535,22 @@ export default class Item {
 
     static async apiUpdateItem(req, res) {
         try {
-            let allItems = await AllItems.findOne({ _id: req.params.id });
-            if (req.body.title) allItems.title = req.body.title;
-            if (req.body.id_category) allItems.id_category = req.body.id_category;
-            if (req.body.price) allItems.price = req.body.price;
-            if (req.body.imageUrl) allItems.imageUrl = req.body.imageUrl;
-            if (req.body.stok) allItems.stok = req.body.stok; 
-            if (req.body.totalPenjualan) allItems.totalPenjualan = req.body.totalPenjualan; 
-    
-            await allItems.save(err => {
-                if (err) return res.json({ error: err + "error" });
-                res.json({ status: "success" });
-            });
+            if (req.headers.authorization === process.env.AUTH) {
+                let allItems = await AllItems.findOne({ _id: req.params.id });
+                if (req.body.title) allItems.title = req.body.title;
+                if (req.body.id_category) allItems.id_category = req.body.id_category;
+                if (req.body.price) allItems.price = req.body.price;
+                if (req.body.imageUrl) allItems.imageUrl = req.body.imageUrl;
+                if (req.body.stok) allItems.stok = req.body.stok; 
+                if (req.body.totalPenjualan) allItems.totalPenjualan = req.body.totalPenjualan; 
+        
+                await allItems.save(err => {
+                    if (err) return res.json({ error: err + "error" });
+                    res.json({ status: "success" });
+                });
+            } else {
+                res.status(403).send("not authorized");
+            }
         } catch {
             res.status(404).json({ error: "error, item does not exist" });
         }

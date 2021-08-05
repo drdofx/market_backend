@@ -36,20 +36,22 @@ export default class ItemCategory {
     }
 
     static async apiPostItemCategory(req, res) {
-        const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        let itemCategory = new Item({
-            _id: req.body._id,
-            category: req.body.category,
-            title: req.body.title,
-            // imageUrl: req.body.imageUrl
-            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-        })
+        if (req.headers.authorization === process.env.AUTH) {
+            const halfUrl = req.protocol + '://' + req.get('host') + '/';
+            let itemCategory = new Item({
+                _id: req.body._id,
+                category: req.body.category,
+                title: req.body.title,
+                imageUrl: req.file ? halfUrl + req.file.path.replace(/\\/g, "/") : req.body.imageUrl
+            })
 
-        await itemCategory.save(err => {
-            if (err) return res.json({ error: "error" + err });
-            res.json({ status: "success" });
-        });
-
+            await itemCategory.save(err => {
+                if (err) return res.json({ error: "error" + err });
+                res.json({ status: "success" });
+            });
+        } else {
+            res.status(403).send("not authorized");
+        }
         /* Insert Many to initialize data
         const document = [
             {

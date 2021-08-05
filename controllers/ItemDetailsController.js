@@ -60,20 +60,24 @@ export default class ItemDetails {
 
 
     static async apiPostItemDetails(req, res) {
-        const halfUrl = req.protocol + '://' + req.get('host') + '/';
-        let allItems = new AllItems({
-            _id: req.body._id,
-            id_category: req.body.id_category,
-            title: req.body.title,
-            price: req.body.price,
-            // imageUrl: req.body.imageUrl
-            imageUrl: halfUrl + req.file.path.replace(/\\/g, "/")
-        })
+        if (req.headers.authorization === process.env.AUTH) {
+            const halfUrl = req.protocol + '://' + req.get('host') + '/';
+            let itemDetails = new ItemsDetails({
+                _id: req.body._id,
+                id_category: req.body.id_category,
+                title: req.body.title,
+                price: req.body.price,
+                imageUrl: req.file ? halfUrl + req.file.path.replace(/\\/g, "/") : req.body.imageUrl
+            })
+            
+            await itemDetails.save(err => {
+                if (err) return res.json({ error: "error" + err });
+                res.json({ status: "success" });
+            });
+        } else {
+            res.status(403).send("not authorized!");
+        }
 
-        await allItems.save(err => {
-            if (err) return res.json({ error: "error" + err });
-            res.json({ status: "success" });
-        });
 
         /* const documents = [
             {
@@ -234,22 +238,26 @@ export default class ItemDetails {
     }
 
     static apiUpdateItemDetailsQuantityAndStock(req, res) {
-        if (req.params.change === "qtyup") {    
-            ItemsDetails
-                .updateOne( { _id: req.params.id, stok: {$gte: 0}, qty: {$gte: 0} }, {$inc : {'qty' : 1, 'stok': -1}}, {new: true})
-                .exec((err) => {
-                    if (err) return res.status(500).send("error");
-                    return res.send("ok");
-                })
-        } else if (req.params.change === "qtydown") {
-            ItemsDetails
-                .updateOne( { _id: req.params.id, stok: {$gt: 0}, qty: {$gt: 0} }, {$inc : {'qty' : -1, 'stok': 1}}, {new: true})
-                .exec((err) => {
-                    if (err) return res.status(500).send("error");
-                    return res.send("ok");
-                })
+        if (req.headers.authorization === process.env.AUTH) {
+            if (req.params.change === "qtyup") {    
+                ItemsDetails
+                    .updateOne( { _id: req.params.id, stok: {$gte: 0}, qty: {$gte: 0} }, {$inc : {'qty' : 1, 'stok': -1}}, {new: true})
+                    .exec((err) => {
+                        if (err) return res.status(500).send("error");
+                        return res.send("ok");
+                    })
+            } else if (req.params.change === "qtydown") {
+                ItemsDetails
+                    .updateOne( { _id: req.params.id, stok: {$gt: 0}, qty: {$gt: 0} }, {$inc : {'qty' : -1, 'stok': 1}}, {new: true})
+                    .exec((err) => {
+                        if (err) return res.status(500).send("error");
+                        return res.send("ok");
+                    })
+            } else {
+                return res.status(404).send("sorry, wrong page!");
+            }
         } else {
-            return res.status(404).send("sorry, wrong page!");
+            res.status(403).send("not authorized");
         }
     }
 }
