@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import ItemsDetails from "../models/ItemsDetails.js";
+import Verif from "../models/Verification.js";
 
 export default class UserIdentifier {
     static apiGetUser(req, res) {
@@ -74,6 +75,30 @@ export default class UserIdentifier {
         }
     }
 
+    static async apiGetVerification(req, res) {
+        Verif
+            .find({})
+            .select("-__v")
+            .exec((err, data) => {
+                if (err) return res.status(500).send("error" + err);
+                return (data.length > 0 ? res.json(data) : res.status(404).send("No item found!"));
+            });
+    }
+
+    static async apiPostVerification(req, res) {
+        let verifs = new Verif({
+            fullName: req.body.fullName,
+            codeNumber: req.body.codeNumber,
+            date: req.body.date
+        })
+        
+        await verifs.save(err => {
+            if (err) return res.json({ error: "error" + err });
+            console.log("nice, verified");
+            res.json({ status: "success" });
+        });
+    }
+
     static async apiUpdateItemByUser(req, res) {
         try {
             if (req.headers.authorization === process.env.AUTH) {
@@ -102,6 +127,19 @@ export default class UserIdentifier {
             }
         } catch(e) {
             res.status(404).json({ error: e + " error, theres no item to be removed" });
+        }
+    }
+
+    static async apiDeleteVerification(req, res) {
+        try {
+            if (req.headers.authorization === process.env.AUTH) {
+                await Verif.deleteMany();
+                res.send("ok removed");
+            } else {
+                res.status(403).send("not authorized");
+            }
+        } catch(e) {
+            res.status(404).json({ error: e + " no" });
         }
     }
 }

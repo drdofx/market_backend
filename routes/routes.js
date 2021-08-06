@@ -97,4 +97,11 @@ router
     .get(UserIdentifier.apiGetUserById)
     .put(UserIdentifier.apiUpdateItemByUser);
 
+// get or post user verification
+router
+    .route("/verif")
+    .get(UserIdentifier.apiGetVerification)
+    .post(UserIdentifier.apiPostVerification)
+    .delete(UserIdentifier.apiDeleteVerification);
+
 export default router;
